@@ -1,24 +1,20 @@
-import { Badge, Box, Divider, IconButton, InputBase, Paper } from "@mui/material";
+import { Badge, Box, Button, Divider, IconButton, InputBase, Paper, Typography } from "@mui/material";
 import { useState } from "react";
-import { Add, Search } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
 import { useDispatch, useSelector } from "react-redux";
-import { setTodoData, setUpdatedTodoData, setFilteredItem, setSearchTerm } from '../state'
-import { STATUS } from "../utils/constants";
-
-const InputBar = () => {
-    const [inputdata, setInputData] = useState("");
-    const [isEditItem, setIsEditItem] = useState("");
-    const [toggleButton, setToggleButton] = useState(false);
-    const [search, setSearch] = useState(false);
-    const [editingData, setEditingData] = useState();
+import { setFilteredItem, setSearchTerm } from '../state'
+import InputModal from "./ui/inputModal";
+import TodoForm from "./todoForm";
+const InputBar = ({ handleToggleView, toggleView }) => {
+    // const [search, setSearch] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [fromOpen, setFormOpen] = useState(false);
     const filteredItem = useSelector(state => state.filteredItem);
     const searchTerm = useSelector(state => state.searchTerm);
     const dispatch = useDispatch();
-
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -31,68 +27,64 @@ const InputBar = () => {
         }
         setAnchorEl(null);
     };
-    // add the items fucnction
-    const addItem = () => {
-        if (!inputdata && !isEditItem) {
-            alert("Enter Some Thing");
-        } else if (editingData && toggleButton) {
-            dispatch(
-                setUpdatedTodoData(editingData)
-            )
-            setEditingData("");
-            setIsEditItem(null);
-            setToggleButton(false);
-        } else {
-            const myNewInputData = {
-                id: new Date().getTime().toString(),
-                name: inputdata,
-                status: STATUS.PENDING
-            };
-            dispatch(
-                setTodoData(myNewInputData)
-            );
-            setInputData("");
-        }
-    };
-
+    const handleFormModal = () => setFormOpen(false)
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Paper
                 component="form"
-                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 600, mb: 4 }}
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: 600, mb: 4 }}
             >
-                {!search ?
-                    <InputBase
-                        sx={{ ml: 1, flex: 1 }}
-                        placeholder="✍ Type Here"
-                        value={inputdata}
-                        onChange={(event) => setInputData(event.target.value)}
-                    /> :
-                    <InputBase
-                        sx={{ ml: 1, flex: 1 }}
-                        placeholder="🔍 Search Here"
-                        value={searchTerm}
-                        onChange={(event) => dispatch(setSearchTerm(event.target.value))}
-                    />}
-                <IconButton color="primary" onClick={addItem} sx={{ p: '10px' }} aria-label="directions">
-                    <Add />
-                </IconButton>
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                <IconButton color={search ? "error" : "primary"} onClick={() => setSearch(!search)} sx={{ p: '10px' }} aria-label="directions">
-                    <Search />
-                </IconButton>
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                <IconButton
-                    id="basic-button"
-                    aria-controls={open ? 'basic-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                >
-                    <Badge color="primary" variant="dot" invisible={!Boolean(filteredItem)} >
-                        <FilterListOutlinedIcon />
-                    </Badge>
-                </IconButton>
+                {/* {!search ?
+                    <Button
+                        variant="outlined"
+                        onClick={() => setFormOpen(true)}
+                    >
+                        <Add />
+                        <Typography sx={{ fontSize: 14 }}>
+                            Add Task
+                        </Typography>
+                    </Button>
+                    : */}
+
+                <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="🔍 Search Here"
+                    value={searchTerm}
+                    onChange={(event) => dispatch(setSearchTerm(event.target.value))}
+                />
+                {/* } */}
+                <Box sx={{ display: 'flex' }}>
+
+                    {/* <IconButton color={search ? "error" : "primary"} onClick={() => setSearch(!search)} sx={{ p: '10px' }} aria-label="directions">
+                        <Search />
+                    </IconButton> */}
+                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                    <IconButton
+                        id="basic-button"
+                        aria-controls={open ? 'basic-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                    >
+                        <Badge color="primary" variant="dot" invisible={!Boolean(filteredItem)} >
+                            <FilterListOutlinedIcon />
+                        </Badge>
+                    </IconButton>
+                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                    <Button
+                        // variant="outlined"
+                        onClick={() => setFormOpen(true)}
+                    >
+                        <Add />
+                        <Typography sx={{ fontSize: 14 }}>
+                            Add Task
+                        </Typography>
+                    </Button>
+                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                    <Button
+                        // variant="outlined"
+                        onClick={handleToggleView}>{toggleView ? "DragList View" : "List View"}</Button>
+                </Box>
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
@@ -107,7 +99,10 @@ const InputBar = () => {
                     <MenuItem onClick={() => handleClose("complete")} >Complete</MenuItem>
                 </Menu>
             </Paper>
-        </Box>
+            <InputModal fromOpen={fromOpen} handleFormModal={handleFormModal}>
+                <TodoForm setFormOpen={handleFormModal} />
+            </InputModal>
+        </Box >
     )
 }
 

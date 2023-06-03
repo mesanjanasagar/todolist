@@ -13,13 +13,13 @@ export const todoSlice = createSlice({
         setTodoData: (state, action) => {
             state.todoData.push(action.payload);
         },
-        setIsEditItem: (state, action) => {
+       setIsEditItem: (state, action) => {
             state.isEditItem = action.payload;
-        },
+        }, 
         setUpdatedTodoData: (state, action) => {
             const data = state.todoData.map((curElem) => {
-                if (curElem.id === state.isEditItem) {
-                    return { ...curElem, name: action.payload };
+                if (curElem.id === action.payload.id) {
+                    return { ...curElem, title: action.payload.title, description: action.payload.description };
                 }
                 return curElem;
             });
@@ -27,8 +27,10 @@ export const todoSlice = createSlice({
         },
         setStatus: (state, action) => {
             const data = state.todoData.map((curElem) => {
-                if (curElem.id === action.payload) {
+                if (curElem.id === action.payload && curElem.status === STATUS.PENDING) {
                     return { ...curElem, status: STATUS.COMPLETE };
+                } else if ((curElem.id === action.payload && curElem.status === STATUS.COMPLETE)) {
+                    return { ...curElem, status: STATUS.PENDING };
                 }
                 return curElem;
             });
@@ -36,7 +38,7 @@ export const todoSlice = createSlice({
         },
         setDelete: (state, action) => {
             if (action.payload === REMOVE_ALL) {
-                return state.todoData = []
+                state.todoData = []
             }
             const updatedItems = state.todoData.filter((curElem) => {
                 return curElem.id !== action.payload;
@@ -51,7 +53,6 @@ export const todoSlice = createSlice({
         }
     },
 });
-
 export const { setTodoData, setIsEditItem, setUpdatedTodoData, setStatus, setDelete, setFilteredItem, setSearchTerm } =
     todoSlice.actions;
 export default todoSlice.reducer;

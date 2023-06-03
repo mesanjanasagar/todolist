@@ -3,29 +3,34 @@ import { useDispatch } from "react-redux";
 import { setDelete } from '../state'
 import { REMOVE_ALL } from "../utils/constants";
 import InputBar from "../components/InputBar";
+import BasicModal from "../components/ui/modal";
+import { useState } from "react";
 import ItemsList from "../components/ItemsList";
+import DragListView from "../components/DragListView";
 // get the localStorage data back
 
 
 const Todo = () => {
     const dispatch = useDispatch();
-
     // remove all the elements
-    const removeAll = () => {
-        dispatch(
-            setDelete(REMOVE_ALL)
-        )
-    };
-
+    const [open, setOpen] = useState(false);
+    const [toggleView, setToggleView] = useState(false);
+    const handleToggleView =()=> setToggleView(!toggleView);
+    const handleClose = () => setOpen(false);
+    const handleOpen = () => setOpen(true);
+    const removeAll = () => handleOpen(true);
     return (
         <>
             <Box>
                 <Paper sx={{ m: 8, textAlign: 'center', backgroundColor: "#ADD8E6" }}>
                     <Typography color={'white'} padding={4} fontWeight="bold">TODO LIST</Typography>
                     {/* show Input bar  */}
-                    <InputBar />
+                    <InputBar handleToggleView={handleToggleView} toggleView={toggleView}/>
                     {/* show our items  */}
-                    <ItemsList />
+                    {toggleView
+                        ? <ItemsList  handleOpen={handleOpen} />
+                        : <DragListView />
+                    }
                     {/* remove all button  */}
                     <Button
                         sx={{
@@ -34,9 +39,17 @@ const Todo = () => {
                         color="error"
                         variant="outlined"
                         onClick={removeAll}>
-                        <span> CLEAR LIST</span>
+                        CLEAR LIST
                     </Button>
                 </Paper>
+                <BasicModal
+                    open={open}
+                    handleClose={handleClose}
+                    title="Are you sure you remove everything?"
+                    onConfirm={() => dispatch(
+                        setDelete(REMOVE_ALL)
+                    )}
+                />
             </Box>
         </>
     );
