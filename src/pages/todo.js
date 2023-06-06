@@ -1,14 +1,13 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setDelete } from '../state'
 import { REMOVE_ALL } from "../utils/constants";
-import InputBar from "../components/InputBar";
 import BasicModal from "../components/ui/modal";
 import { useState } from "react";
 import ItemsList from "../components/ItemsList";
 import DragListView from "../components/DragListView";
-// get the localStorage data back
-
+import SearchAppBar from "../components/ui/header";
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 
 const Todo = () => {
     const dispatch = useDispatch();
@@ -23,17 +22,25 @@ const Todo = () => {
     const handleOpen = () => setOpen(true);
     return (
         <>
+            <SearchAppBar handleToggleView={handleToggleView} toggleView={toggleView} />
             <Box>
-                <Paper sx={{ my: {md:4,sm:0}, mx: {md:2,sm:0}, textAlign: 'center', backgroundColor: "#ADD8E6"}}>
-                    <Typography color={'white'} padding={4} fontWeight="bold">TODO LIST</Typography>
-                    {/* show Input bar  */}
-                    <InputBar handleToggleView={handleToggleView} toggleView={toggleView} />
-                    {/* show our items  */}
+                <Box sx={{ textAlign: 'center' }}>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", color: "#27374D" }}>
+
+                        <Typography
+                            sx={{
+                                fontSize: '18px',
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                                marginY: 4,
+                                marginX: 1
+                            }} >ALL TASKS </Typography>
+                        <FactCheckOutlinedIcon sx={{ mb: "1px" }} />
+                    </Box>
                     {!toggleView
                         ? <ItemsList handleOpen={handleOpen} handleClose={handleClose} open={open} />
                         : <DragListView handleOpen={handleOpen} handleClose={handleClose} open={open} />
                     }
-                    {/* remove all button  */}
                     <Button
                         sx={{
                             m: 2
@@ -43,7 +50,7 @@ const Todo = () => {
                         onClick={handleRemoveAllOpen}>
                         CLEAR LIST
                     </Button>
-                </Paper>
+                </Box>
                 <BasicModal
                     open={removeAllOpen}
                     handleClose={handleRemoveAllClose}

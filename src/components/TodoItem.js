@@ -42,11 +42,12 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                         m: 2,
                         mb: 4,
                         pl: 1,
-                        mx:0,
+                        mx: 0,
                         backgroundColor: `${curElem.status === STATUS.COMPLETE ? 'green' : '#e5e500'}`,
                         maxWidth: 600,
                         width: '100%',
                         margin: '0 auto',
+                        borderRadius:2,
                     }}
                     elevation={2}
                     key={curElem.id}
@@ -59,7 +60,8 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                             p: 1.5,
                             display: 'flex',
                             flexDirection: 'column',
-                            backgroundColor: 'white'
+                            backgroundColor: "#DDE6ED",
+                            borderRadius:2,
                         }}
                     >
                         <Typography

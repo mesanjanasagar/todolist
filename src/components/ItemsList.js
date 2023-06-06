@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setStatus } from '../state'
@@ -7,6 +7,7 @@ import InputModal from "./ui/inputModal";
 import TodoForm from "./todoForm";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import TodoItem from "./TodoItem";
+import { getFilteredItems } from "../utils/helper";
 
 const ItemsList = ({ handleOpen, handleClose, open }) => {
     const [editField, seteditFeld] = useState(false);
@@ -17,21 +18,7 @@ const ItemsList = ({ handleOpen, handleClose, open }) => {
     const searchTerm = useSelector(state => state.searchTerm);
     const filteredItem = useSelector(state => state.filteredItem);
 
-    let filteredItems = items.filter((item) => {
-        const nameMatches = item.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const statusMatches = item.status.toLowerCase().includes(filteredItem.toLowerCase());
-        if (searchTerm === "" && filteredItem === "all") {
-            return true; // no search or filter applied
-        }
-        if (searchTerm !== "" && !nameMatches) {
-            return false; // search term doesn't match name
-        }
-        if (filteredItem !== "all" && !statusMatches) {
-            return false; // status value doesn't match filter
-        }
-        return true; // item matches search and filter criteria
-    });
-
+    let filteredItems = getFilteredItems(items, searchTerm, filteredItem);
     const handleFormModal = () => seteditFeld(!editField)
     const handleEditingData = (val) => setEditingData(val)
     return (
@@ -48,7 +35,7 @@ const ItemsList = ({ handleOpen, handleClose, open }) => {
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
-                        {filteredItems.map((curElem, i) => {
+                        {filteredItems.length ? filteredItems.map((curElem, i) => {
                             return (
                                 <TodoItem
                                     curElem={curElem}
@@ -60,7 +47,12 @@ const ItemsList = ({ handleOpen, handleClose, open }) => {
                                     editingData={editingData}
                                 />
                             );
-                        })}
+                        }) : <Typography sx={{
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            marginTop: 2,
+                        }}>Nothing To Show</Typography>}
                         {provided.placeholder}
                     </Box>
                 )}

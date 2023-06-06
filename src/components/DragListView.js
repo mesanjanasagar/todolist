@@ -9,6 +9,7 @@ import TodoForm from './todoForm';
 import BasicModal from './ui/modal';
 import { setStatus } from '../state'
 import { useDispatch } from 'react-redux';
+import { getFilteredItems } from '../utils/helper';
 
 const DragListView = ({ handleOpen, handleClose, open }) => {
     const todoData = useSelector(state => state.todoData);
@@ -18,6 +19,9 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
     const handleEditingData = (val) => setEditingData(val);
     const dispatch = useDispatch();
     const isEditItem = useSelector(state => state.isEditItem);
+    const searchTerm = useSelector(state => state.searchTerm);
+    const filteredItem = useSelector(state => state.filteredItem);
+    let filteredItems = getFilteredItems(todoData, searchTerm, filteredItem);
     const onDragEnd = (result) => {
         const { destination, source, draggableId } = result;
         console.log(result);
@@ -32,7 +36,6 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
         }
         // Source Logic
         if (source.droppableId === "Todolist-active" && destination.droppableId === "Todolist-completed") {
-            console.log("hi");
             dispatch(
                 setStatus(draggableId)
             );
@@ -70,7 +73,7 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                                             fontSize: { md: 22, sm: 18 },
                                             color: 'primary.dark'
                                         }}>Active Tasks</Typography>
-                                    {todoData
+                                    {filteredItems.length ? filteredItems
                                         .filter((curElem) => curElem.status === STATUS.PENDING)
                                         .map((curElem, i) => {
                                             return (
@@ -84,7 +87,13 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                                                     editingData={editingData}
                                                 />
                                             );
-                                        })}
+                                        }) : <Typography sx={{
+                                            fontSize: '18px',
+                                            fontWeight: 'bold',
+                                            textAlign: 'center',
+                                            marginTop: 2,
+                                            color: "#526D82"
+                                        }}>Nothing To Show</Typography>}
                                     {provided.placeholder}
                                 </Paper>
                             )}
@@ -111,7 +120,7 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                                             color: 'success.dark',
                                             py: 2
                                         }}>Completed Tasks</Typography>
-                                    {todoData
+                                    {filteredItems.length ? filteredItems
                                         .filter((curElem) => curElem.status === STATUS.COMPLETE)
                                         .map((curElem, i) => (
                                             <TodoItem
@@ -123,7 +132,13 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                                                 i={i}
                                                 editingData={editingData}
                                             />
-                                        ))}
+                                        )) : <Typography sx={{
+                                            fontSize: '18px',
+                                            fontWeight: 'bold',
+                                            textAlign: 'center',
+                                            marginTop: 2,
+                                            color: "#526D82"
+                                        }}>Nothing To Show</Typography>}
                                     {provided.placeholder}
                                 </Paper>
                             )}
