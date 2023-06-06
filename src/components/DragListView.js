@@ -30,7 +30,6 @@ const DragListView = () => {
 
         if (source.droppableId === "Todolist-active") {
             add = active[source.index];
-            
         } else {
 
         }
