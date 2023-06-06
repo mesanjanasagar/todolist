@@ -13,9 +13,9 @@ export const todoSlice = createSlice({
         setTodoData: (state, action) => {
             state.todoData.push(action.payload);
         },
-       setIsEditItem: (state, action) => {
+        setIsEditItem: (state, action) => {
             state.isEditItem = action.payload;
-        }, 
+        },
         setUpdatedTodoData: (state, action) => {
             const data = state.todoData.map((curElem) => {
                 if (curElem.id === action.payload.id) {
@@ -50,7 +50,7 @@ export const todoSlice = createSlice({
         },
         setSearchTerm: (state, action) => {
             state.searchTerm = action.payload;
-        }
+        },
     },
 });
 export const { setTodoData, setIsEditItem, setUpdatedTodoData, setStatus, setDelete, setFilteredItem, setSearchTerm } =

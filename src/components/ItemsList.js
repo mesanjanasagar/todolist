@@ -8,7 +8,7 @@ import TodoForm from "./todoForm";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import TodoItem from "./TodoItem";
 
-const ItemsList = () => {
+const ItemsList = ({ handleOpen, handleClose, open }) => {
     const [editField, seteditFeld] = useState(false);
     const [editingData, setEditingData] = useState();
     const dispatch = useDispatch();
@@ -33,9 +33,6 @@ const ItemsList = () => {
     });
 
     const handleFormModal = () => seteditFeld(!editField)
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
     const handleEditingData = (val) => setEditingData(val)
     return (
         <DragDropContext >
@@ -68,7 +65,9 @@ const ItemsList = () => {
                     </Box>
                 )}
             </Droppable>
-            <InputModal fromOpen={editField} handleFormModal={handleFormModal}>
+            <InputModal
+                fromOpen={editField}
+                handleFormModal={handleFormModal}>
                 <TodoForm
                     setFormOpen={handleFormModal}
                     initialValues={editingData}

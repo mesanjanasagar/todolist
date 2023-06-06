@@ -2,10 +2,10 @@ import { Box, IconButton, Paper, Typography } from "@mui/material";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import { useDispatch, useSelector } from "react-redux";
 import { STATUS } from "../utils/constants";
-import {  setIsEditItem, setStatus, setDelete } from '../state'
-import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
+import { setIsEditItem, setStatus, setDelete } from '../state'
 import { Draggable } from "react-beautiful-dnd";
 import ExpandView from "./ui/expandContractView";
 
@@ -13,29 +13,6 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
     const dispatch = useDispatch();
     const items = useSelector(state => state.todoData);
 
-    // add the items function
-    // const addItem = () => {
-    //     if (!inputdata && !isEditItem) {
-    //         alert("Enter Some Thing");
-    //     } else if (editingData) {
-    //         dispatch(
-    //             setUpdatedTodoData(editingData)
-    //         )
-    //         handleEditingData("");
-    //         setIsEditItem(null);
-    //     } else {
-    //         const myNewInputData = {
-    //             id: new Date().getTime().toString(),
-    //             name: inputdata,
-    //             status: STATUS.PENDING
-    //         };
-    //         dispatch(
-    //             setTodoData(myNewInputData)
-    //         );
-    //         setInputData("");
-    //     }
-    // };
-    //edit the items
     const editItem = (index) => {
         const item_todo_edited = items.find((curElem) => {
             return curElem.id === index;
@@ -44,22 +21,19 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
         handleEditingData(item_todo_edited);
     };
 
-
     const deleteItem = (index) => {
-        dispatch(
-            setDelete(index)
-        )
+        dispatch(setDelete(index));
     };
+
     const handleStatus = (val) => {
         if (val.status === STATUS.COMPLETE) {
-            dispatch(
-                setIsEditItem(val.id)
-            )
+            dispatch(setIsEditItem(val.id));
             handleOpen();
         } else {
-            dispatch(setStatus(val.id))
+            dispatch(setStatus(val.id));
         }
     };
+
     return (
         <Draggable draggableId={curElem.id} index={i} key={curElem.id}>
             {(provided) => (
@@ -68,8 +42,11 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                         m: 2,
                         mb: 4,
                         pl: 1,
-                        width: 600,
-                        backgroundColor: `${curElem.status === STATUS.COMPLETE ? 'green' : '#e5e500'}`
+                        mx:0,
+                        backgroundColor: `${curElem.status === STATUS.COMPLETE ? 'green' : '#e5e500'}`,
+                        maxWidth: 600,
+                        width: '100%',
+                        margin: '0 auto',
                     }}
                     elevation={2}
                     key={curElem.id}
@@ -81,68 +58,74 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                         sx={{
                             p: 1.5,
                             display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
+                            flexDirection: 'column',
                             backgroundColor: 'white'
-                        }}>
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: 18,
+                                marginBottom: 1,
+                                textAlign: 'center'
+                            }}
+                        >
+                            {curElem.title}
+                        </Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Box sx={{ wordWrap: 'break-word', width: '100%' }}>
+                                <ExpandView text={curElem.description} limit={100} />
+                            </Box>
+                        </Box>
                         <Box
                             sx={{
-                                wordWrap: 'break-word',
-                                p: 2, textAlign: 'start',
-                                width: 400
-                            }}>
-                            <Typography
-                                sx={{
-                                    fontWeight: 'bold',
-                                    fontSize: 18
-                                }} >{curElem.title}</Typography>
-                            <ExpandView
-                                text={curElem.description}
-                                limit={100} />
-                        </Box>
-                        <Box>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}>
-                                <IconButton >
-                                    {
-                                        curElem.status !== STATUS.COMPLETE ?
-                                            <EditNoteOutlinedIcon
-                                                onClick={() => {
-                                                    editItem(curElem.id);
-                                                    handleFormModal(true)
-                                                }} /> : ""
-                                    }
+                                display: 'flex',
+                                justifyContent: 'center',
+                                marginTop: 1
+                            }}
+                        >
+                            <IconButton
+                                disabled={curElem.status === STATUS.COMPLETE}
+                                sx={{ color: "green", marginRight: 1 }}
+                                onClick={() => handleStatus(curElem)}
+                            >
+                                <TaskAltIcon />
+                            </IconButton>
+                            {curElem.status !== STATUS.COMPLETE ?
+                                < IconButton
+                                    sx={{ marginRight: 1 }}
+                                >
+                                    <EditNoteOutlinedIcon
+                                        onClick={() => {
+                                            editItem(curElem.id);
+                                            handleFormModal(true);
+                                        }}
+                                    />
+                                </IconButton> : ""
+                            }
+
+
+
+                            {curElem.status !== STATUS.COMPLETE ? "" : (
+
+                                <IconButton sx={{ marginRight: 1 }} onClick={() => handleStatus(curElem)}>
+                                    <ReplayOutlinedIcon />
                                 </IconButton>
-                                <IconButton>
-                                    <DeleteOutlineOutlinedIcon
-                                        onClick={() => deleteItem(curElem.id)} />
-                                </IconButton>
-                                {curElem.status !== STATUS.COMPLETE ?
-                                    <IconButton >
-                                        <TaskAltIcon
-                                            sx={{ color: 'green' }}
-                                            onClick={() => handleStatus(curElem)}
-                                        />
-                                    </IconButton>
-                                    : <Box>
-                                        <IconButton disabled>
-                                            <TaskAltIcon sx={{ color: 'grey' }} />
-                                        </IconButton>
-                                        <IconButton onClick={() => handleStatus(curElem)}>
-                                            <ReplayOutlinedIcon />
-                                        </IconButton>
-                                    </Box>}
-                            </Box>
+
+                            )}
+                            <IconButton
+                                onClick={() => deleteItem(curElem.id)}
+                            >
+                                <DeleteOutlineOutlinedIcon />
+                            </IconButton>
                         </Box>
                     </Box>
                     {provided.placeholder}
                 </Paper>
-            )}
-        </Draggable>
-    )
-}
+            )
+            }
+        </Draggable >
+    );
+};
 
-export default TodoItem
+export default TodoItem;

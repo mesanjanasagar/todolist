@@ -14,22 +14,24 @@ const Todo = () => {
     const dispatch = useDispatch();
     // remove all the elements
     const [open, setOpen] = useState(false);
+    const [removeAllOpen, setremoveAllOpen] = useState(false);
     const [toggleView, setToggleView] = useState(false);
-    const handleToggleView =()=> setToggleView(!toggleView);
+    const handleToggleView = () => setToggleView(!toggleView);
     const handleClose = () => setOpen(false);
+    const handleRemoveAllClose = () => setremoveAllOpen(false);
+    const handleRemoveAllOpen = () => setremoveAllOpen(true);
     const handleOpen = () => setOpen(true);
-    const removeAll = () => handleOpen(true);
     return (
         <>
             <Box>
-                <Paper sx={{ m: 8, textAlign: 'center', backgroundColor: "#ADD8E6" }}>
+                <Paper sx={{ my: {md:4,sm:0}, mx: {md:2,sm:0}, textAlign: 'center', backgroundColor: "#ADD8E6"}}>
                     <Typography color={'white'} padding={4} fontWeight="bold">TODO LIST</Typography>
                     {/* show Input bar  */}
-                    <InputBar handleToggleView={handleToggleView} toggleView={toggleView}/>
+                    <InputBar handleToggleView={handleToggleView} toggleView={toggleView} />
                     {/* show our items  */}
-                    {toggleView
-                        ? <ItemsList  handleOpen={handleOpen} />
-                        : <DragListView />
+                    {!toggleView
+                        ? <ItemsList handleOpen={handleOpen} handleClose={handleClose} open={open} />
+                        : <DragListView handleOpen={handleOpen} handleClose={handleClose} open={open} />
                     }
                     {/* remove all button  */}
                     <Button
@@ -38,13 +40,13 @@ const Todo = () => {
                         }}
                         color="error"
                         variant="outlined"
-                        onClick={removeAll}>
+                        onClick={handleRemoveAllOpen}>
                         CLEAR LIST
                     </Button>
                 </Paper>
                 <BasicModal
-                    open={open}
-                    handleClose={handleClose}
+                    open={removeAllOpen}
+                    handleClose={handleRemoveAllClose}
                     title="Are you sure you remove everything?"
                     onConfirm={() => dispatch(
                         setDelete(REMOVE_ALL)
