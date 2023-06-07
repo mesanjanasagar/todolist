@@ -79,13 +79,13 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
     const handleFormModal = () => setFormOpen(false);
 
     return (
-        <Box sx={{ flexGrow: 1,p:2 }}>
+        <Box sx={{ flexGrow: 1, p: 2 }}>
             <AppBar position="static"
-                sx={{ backgroundColor: "#27374D", color: "#DDE6ED",borderRadius:2 ,border:'1px solid #DDE6ED'}}
+                sx={{ backgroundColor: "#27374D", color: "#DDE6ED", borderRadius: 2, border: '1px solid #DDE6ED' }}
             >
                 <Toolbar >
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-                        <Button sx={{color:"#DDE6ED"}} variant='outlined' onClick={() => setFormOpen(true)}>
+                        <Button sx={{ color: "#DDE6ED" }} variant='outlined' onClick={() => setFormOpen(true)}>
                             <Add />
                             <Typography sx={{ fontSize: 14 }}>
                                 Add
@@ -101,7 +101,7 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
                             aria-haspopup="true"
                             aria-expanded={open ? 'true' : undefined}
                             onClick={handleClick}
-                            sx={{color:"#DDE6ED"}}
+                            sx={{ color: "#DDE6ED" }}
                         >
                             <Badge
                                 color="primary"
@@ -116,8 +116,8 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
                             orientation="vertical"
                         />
                         <IconButton
-                        sx={{color:"#DDE6ED"}}
-                         onClick={handleToggleView}>
+                            sx={{ color: "#DDE6ED" }}
+                            onClick={handleToggleView}>
                             {!toggleView ? (
                                 <AutoAwesomeMosaicIcon />
                             ) : (

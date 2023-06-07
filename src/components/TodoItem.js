@@ -47,7 +47,7 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                         maxWidth: 600,
                         width: '100%',
                         margin: '0 auto',
-                        borderRadius:2,
+                        borderRadius: 2,
                     }}
                     elevation={2}
                     key={curElem.id}
@@ -59,30 +59,33 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                         sx={{
                             p: 1.5,
                             display: 'flex',
-                            flexDirection: 'column',
                             backgroundColor: "#DDE6ED",
-                            borderRadius:2,
+                            borderRadius: 2,
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
                         }}
                     >
-                        <Typography
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: 18,
-                                marginBottom: 1,
-                                textAlign: 'center'
-                            }}
-                        >
-                            {curElem.title}
-                        </Typography>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Box sx={{ wordWrap: 'break-word', width: '100%' }}>
-                                <ExpandView text={curElem.description} limit={100} />
+                        <Box>
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                    fontSize: 18,
+                                    marginBottom: 1,
+                                    textAlign: 'start'
+                                }}
+                            >
+                                {curElem.title}
+                            </Typography>
+                            <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+                                <Box sx={{ wordWrap: 'break-word', width: '100%', textAlign: 'start' }}>
+                                    <ExpandView text={curElem.description} limit={100} />
+                                </Box>
                             </Box>
                         </Box>
                         <Box
                             sx={{
                                 display: 'flex',
-                                justifyContent: 'center',
+                                justifyContent: 'end',
                                 marginTop: 1
                             }}
                         >
@@ -105,9 +108,6 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                                     />
                                 </IconButton> : ""
                             }
-
-
-
                             {curElem.status !== STATUS.COMPLETE ? "" : (
 
                                 <IconButton sx={{ marginRight: 1 }} onClick={() => handleStatus(curElem)}>

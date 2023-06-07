@@ -9,7 +9,15 @@ const ExpandView = ({ text, limit }) => {
     return (
         <Typography variant=''>
             {expanded ? text : `${text.slice(0, limit)}`}
-            <Link component={'button'} sx={{ textDecoration: 'none', fontSize: 14 }} onClick={handleToggleExpand}>{text.length > limit ? expanded ? "View Less" : "Read more" : ""}</Link>
+            <Link
+                component={'button'}
+                sx={{
+                    textDecoration: 'none',
+                    fontSize: 14,
+                    ml:1
+                }}
+                onClick={handleToggleExpand}
+            >{text.length > limit ? expanded ? "View Less" : "Read more..." : ""}</Link>
         </Typography>
     )
 }
