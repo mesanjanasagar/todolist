@@ -34,7 +34,7 @@ const TodoForm = ({ setFormOpen, initialValues }) => {
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <Stack spacing={2} width={600}>
+            <Stack spacing={2} sx={{ width: { md: 600, xs: 250, sm: 400 } }}>
                 <Typography sx={{ mt: -5 }} fontWeight={'bold'}>{!initialValues ? "Create Todo" : "Edit Todo"}</Typography>
                 <TextField
                     label="Title"

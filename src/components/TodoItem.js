@@ -59,7 +59,7 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                         sx={{
                             p: 1.5,
                             display: 'flex',
-                            backgroundColor: "#DDE6ED",
+                            backgroundColor: "#FAEAB1",
                             borderRadius: 2,
                             alignItems: 'center',
                             justifyContent: 'space-between'

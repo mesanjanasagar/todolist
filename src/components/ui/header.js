@@ -22,7 +22,7 @@ const Search = styled('div')(({ theme }) => ({
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    border: '1px solid #DDE6ED',
+    border: '1px solid #FAEAB1',
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -81,11 +81,11 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
     return (
         <Box sx={{ flexGrow: 1, p: 2 }}>
             <AppBar position="static"
-                sx={{ backgroundColor: "#27374D", color: "#DDE6ED", borderRadius: 2, border: '1px solid #DDE6ED' }}
+                sx={{ backgroundColor: "#C58940", color: "#DDE6ED", borderRadius: 2, border: '1px solid #FAEAB1' }}
             >
                 <Toolbar >
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-                        <Button sx={{ color: "#DDE6ED" }} variant='outlined' onClick={() => setFormOpen(true)}>
+                        <Button sx={{ color: "#DDE6ED", borderColor: "#FAEAB1" }} variant='outlined' onClick={() => setFormOpen(true)}>
                             <Add />
                             <Typography sx={{ fontSize: 14 }}>
                                 Add
@@ -108,7 +108,7 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
                                 variant="dot"
                                 invisible={!Boolean(filteredItem)}
                             >
-                                <FilterListOutlinedIcon />
+                                <FilterListOutlinedIcon sx={{ color: "#DDE6ED" }} />
                             </Badge>
                         </IconButton>
                         <Divider

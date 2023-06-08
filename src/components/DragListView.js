@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material'
+import { Box, Container, Paper, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TodoItem from './TodoItem';
@@ -50,33 +50,84 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
         <Box >
             <DragDropContext
                 onDragEnd={onDragEnd}>
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', my: { md: 4 }, flexFlow: { xs: 'column', md: 'row' } }}>
                     <Box sx={{
-                        p: 2, width: "100%"
+                        width: "100%",
+                        my: { md: 0, xs: 2 }
                     }}>
                         <Droppable droppableId="Todolist-active">
                             {(provided) => (
-                                <Paper sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    p: { md: 2, sm: 0 },
-                                    backgroundColor: '#f6f8fa'
-                                }}
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    <Typography
-                                        sx={{
-                                            p: 2,
-                                            fontSize: { md: 22, sm: 18 },
-                                            color: 'primary.dark'
-                                        }}>Active Tasks</Typography>
-                                    {filteredItems.length ? filteredItems
-                                        .filter((curElem) => curElem.status === STATUS.PENDING)
-                                        .map((curElem, i) => {
-                                            return (
+                                <Container maxWidth="md">
+                                    <Paper sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        p: { md: 2, sm: 0 },
+                                        backgroundColor: "hsl(40, 40%, 94%)"
+                                    }}
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                p: 2,
+                                                fontSize: { md: 22, sm: 18 },
+                                                color: 'primary.dark'
+                                            }}>Active Tasks</Typography>
+                                        {filteredItems.length ? filteredItems
+                                            .filter((curElem) => curElem.status === STATUS.PENDING)
+                                            .map((curElem, i) => {
+                                                return (
+                                                    <TodoItem
+                                                        curElem={curElem}
+                                                        handleOpen={handleOpen}
+                                                        handleEditingData={handleEditingData}
+                                                        handleFormModal={handleFormModal}
+                                                        editField={editField}
+                                                        i={i}
+                                                        editingData={editingData}
+                                                    />
+                                                );
+                                            }) : <Typography sx={{
+                                                fontSize: '18px',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                marginTop: 2,
+                                                color: "#526D82"
+                                            }}>Nothing To Show</Typography>}
+                                        {provided.placeholder}
+                                    </Paper>
+                                </Container>
+                            )}
+                        </Droppable>
+                    </Box>
+                    <Box sx={{
+                        width: "100%"
+                    }}>
+                        <Droppable droppableId="Todolist-completed">
+                            {(provided) => (
+                                <Container maxWidth="md">
+                                    <Paper sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        p: { md: 2, sm: 0 },
+                                        backgroundColor: "hsl(40, 40%, 94%)"
+                                    }}
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                fontSize: { md: 22, sm: 18 },
+                                                color: 'success.dark',
+                                                py: 2
+                                            }}>Completed Tasks</Typography>
+                                        {filteredItems.length ? filteredItems
+                                            .filter((curElem) => curElem.status === STATUS.COMPLETE)
+                                            .map((curElem, i) => (
                                                 <TodoItem
                                                     curElem={curElem}
                                                     handleOpen={handleOpen}
@@ -86,61 +137,16 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                                                     i={i}
                                                     editingData={editingData}
                                                 />
-                                            );
-                                        }) : <Typography sx={{
-                                            fontSize: '18px',
-                                            fontWeight: 'bold',
-                                            textAlign: 'center',
-                                            marginTop: 2,
-                                            color: "#526D82"
-                                        }}>Nothing To Show</Typography>}
-                                    {provided.placeholder}
-                                </Paper>
-                            )}
-                        </Droppable>
-                    </Box>
-                    <Box sx={{
-                        p: 2, width: "100%"
-                    }}>
-                        <Droppable droppableId="Todolist-completed">
-                            {(provided) => (
-                                <Paper sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    p: { md: 2, sm: 0 },
-                                }}
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    <Typography
-                                        sx={{
-                                            fontSize: { md: 22, sm: 18 },
-                                            color: 'success.dark',
-                                            py: 2
-                                        }}>Completed Tasks</Typography>
-                                    {filteredItems.length ? filteredItems
-                                        .filter((curElem) => curElem.status === STATUS.COMPLETE)
-                                        .map((curElem, i) => (
-                                            <TodoItem
-                                                curElem={curElem}
-                                                handleOpen={handleOpen}
-                                                handleEditingData={handleEditingData}
-                                                handleFormModal={handleFormModal}
-                                                editField={editField}
-                                                i={i}
-                                                editingData={editingData}
-                                            />
-                                        )) : <Typography sx={{
-                                            fontSize: '18px',
-                                            fontWeight: 'bold',
-                                            textAlign: 'center',
-                                            marginTop: 2,
-                                            color: "#526D82"
-                                        }}>Nothing To Show</Typography>}
-                                    {provided.placeholder}
-                                </Paper>
+                                            )) : <Typography sx={{
+                                                fontSize: '18px',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                marginTop: 2,
+                                                color: "#526D82"
+                                            }}>Nothing To Show</Typography>}
+                                        {provided.placeholder}
+                                    </Paper>
+                                </Container>
                             )}
                         </Droppable>
                     </Box>

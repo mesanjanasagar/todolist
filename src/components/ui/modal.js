@@ -9,11 +9,12 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: { md: 400 },
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    borderRadius: 4
+    borderRadius: 4,
+    textAlign: 'center'
 };
 
 export default function BasicModal({ open, handleClose, title, onConfirm }) {
