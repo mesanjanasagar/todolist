@@ -7,20 +7,20 @@ import { STATUS } from '../utils/constants';
 import InputModal from './ui/inputModal';
 import TodoForm from './todoForm';
 import BasicModal from './ui/modal';
-import { setStatus } from '../state'
 import { useDispatch } from 'react-redux';
 import { getFilteredItems } from '../utils/helper';
+import { setStatus } from '../state/features/todo';
 
 const DragListView = ({ handleOpen, handleClose, open }) => {
-    const todoData = useSelector(state => state.todoData);
+    const todoData = useSelector(state => state.todos.todoData);
     const [editField, seteditFeld] = useState(false);
     const [editingData, setEditingData] = useState();
     const handleFormModal = () => seteditFeld(!editField)
     const handleEditingData = (val) => setEditingData(val);
     const dispatch = useDispatch();
-    const isEditItem = useSelector(state => state.isEditItem);
-    const searchTerm = useSelector(state => state.searchTerm);
-    const filteredItem = useSelector(state => state.filteredItem);
+    const isEditItem = useSelector(state => state.todos.isEditItem);
+    const searchTerm = useSelector(state => state.todos.searchTerm);
+    const filteredItem = useSelector(state => state.todos.filteredItem);
     let filteredItems = getFilteredItems(todoData, searchTerm, filteredItem);
     const onDragEnd = (result) => {
         const { destination, source, draggableId } = result;

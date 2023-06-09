@@ -5,13 +5,13 @@ import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import { useDispatch, useSelector } from "react-redux";
 import { STATUS } from "../utils/constants";
-import { setIsEditItem, setStatus, setDelete } from '../state'
 import { Draggable } from "react-beautiful-dnd";
 import ExpandView from "./ui/expandContractView";
+import { setDelete, setIsEditItem, setStatus } from "../state/features/todo";
 
 const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, handleOpen, i, editingData }) => {
     const dispatch = useDispatch();
-    const items = useSelector(state => state.todoData);
+    const items = useSelector(state => state.todos.todoData);
 
     const editItem = (index) => {
         const item_todo_edited = items.find((curElem) => {

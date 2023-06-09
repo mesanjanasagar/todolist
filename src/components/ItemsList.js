@@ -1,22 +1,22 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setStatus } from '../state'
 import BasicModal from "./ui/modal";
 import InputModal from "./ui/inputModal";
 import TodoForm from "./todoForm";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import TodoItem from "./TodoItem";
 import { getFilteredItems } from "../utils/helper";
+import { setStatus } from "../state/features/todo";
 
 const ItemsList = ({ handleOpen, handleClose, open }) => {
     const [editField, seteditFeld] = useState(false);
     const [editingData, setEditingData] = useState();
     const dispatch = useDispatch();
-    const items = useSelector(state => state.todoData);
-    const isEditItem = useSelector(state => state.isEditItem);
-    const searchTerm = useSelector(state => state.searchTerm);
-    const filteredItem = useSelector(state => state.filteredItem);
+    const items = useSelector(state => state.todos.todoData);
+    const isEditItem = useSelector(state => state.todos.isEditItem);
+    const searchTerm = useSelector(state => state.todos.searchTerm);
+    const filteredItem = useSelector(state => state.todos.filteredItem);
 
     let filteredItems = getFilteredItems(items, searchTerm, filteredItem);
     const handleFormModal = () => seteditFeld(!editField)

@@ -2,8 +2,9 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
-import { setTodoData, setUpdatedTodoData } from '../state';
 import { STATUS } from '../utils/constants';
+import { setTodoData, setUpdatedTodoData } from '../state/features/todo';
+import { useSelector } from 'react-redux';
 const defaultValues = {
     id: "",
     title: "",
@@ -16,20 +17,24 @@ const TodoForm = ({ setFormOpen, initialValues }) => {
     });
     const { register, handleSubmit, formState } = form;
     const { errors } = formState;
+    const isAuth = useSelector(state=>state.auth.token)
     const dispatch = useDispatch();
     const onSubmit = (values) => {
-        setFormOpen(false)
-        const myNewInputData = {
-            id: new Date().getTime().toString(),
-            title: values.title,
-            description: values.description,
-            status: STATUS.PENDING
-        };
-
-        if (!initialValues) {
-            dispatch(setTodoData(myNewInputData));
+        if (Boolean(isAuth)) {
+            setFormOpen(false)
+            const myNewInputData = {
+                id: new Date().getTime().toString(),
+                title: values.title,
+                description: values.description,
+                status: STATUS.PENDING
+            };
+            if (!initialValues) {
+                dispatch(setTodoData(myNewInputData));
+            } else {
+                dispatch(setUpdatedTodoData({ ...myNewInputData, id: initialValues.id }));
+            }
         } else {
-            dispatch(setUpdatedTodoData({ ...myNewInputData, id: initialValues.id }))
+            alert("User is not loggedin");
         }
     };
     return (

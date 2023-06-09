@@ -1,6 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { setDelete } from '../state'
 import { REMOVE_ALL } from "../utils/constants";
 import BasicModal from "../components/ui/modal";
 import { useState } from "react";
@@ -8,6 +7,7 @@ import ItemsList from "../components/ItemsList";
 import DragListView from "../components/DragListView";
 import SearchAppBar from "../components/ui/header";
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
+import { setDelete } from "../state/features/todo";
 
 const Todo = () => {
     const dispatch = useDispatch();

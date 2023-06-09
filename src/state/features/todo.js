@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { REMOVE_ALL, STATUS } from "../utils/constants";
+import { REMOVE_ALL, STATUS } from "../../utils/constants";
 const initialState = {
     todoData: [],
     isEditItem: "",

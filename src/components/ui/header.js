@@ -8,13 +8,17 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { setFilteredItem, setSearchTerm } from '../../state'
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Badge, Box, Button, Divider, IconButton, InputBase, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import InputModal from "./inputModal";
 import TodoForm from "../todoForm";
+import LoginIcon from '@mui/icons-material/Login';
+import { Link, useNavigate } from 'react-router-dom';
+import { setFilteredItem, setSearchTerm } from '../../state/features/todo';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { setToken } from '../../state/features/auth'
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -61,10 +65,11 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [fromOpen, setFormOpen] = useState(false);
     const open = Boolean(anchorEl);
-    const filteredItem = useSelector(state => state.filteredItem);
-    const searchTerm = useSelector(state => state.searchTerm);
-
+    const filteredItem = useSelector(state => state.todos.filteredItem);
+    const searchTerm = useSelector(state => state.todos.searchTerm);
+    const isAuth = useSelector(state => state.auth.token);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -77,6 +82,10 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
         setAnchorEl(null);
     };
     const handleFormModal = () => setFormOpen(false);
+    const handleLogout = () => {
+        dispatch(setToken());
+        console.log(isAuth);
+    }
 
     return (
         <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -138,7 +147,6 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
                         <MenuItem onClick={() => handleClose("pending")}>Pending</MenuItem>
                         <MenuItem onClick={() => handleClose("complete")}>Complete</MenuItem>
                     </Menu>
-
                     <Search >
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -150,6 +158,14 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
+                    {Boolean(isAuth)
+                        ? < IconButton sx={{ ml: { md: 2 }, color: "#DDE6ED" }}>
+                            <LogoutIcon onClick={handleLogout} />
+                        </IconButton>
+                        : < IconButton sx={{ ml: { md: 2 }, color: "#DDE6ED" }}>
+                            <LoginIcon onClick={() => navigate('/auth')} />
+                        </IconButton>
+                    }
                 </Toolbar>
                 <InputModal fromOpen={fromOpen} handleFormModal={handleFormModal}>
                     <TodoForm setFormOpen={handleFormModal} />
