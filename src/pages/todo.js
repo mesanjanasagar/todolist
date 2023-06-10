@@ -1,13 +1,17 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Avatar, Box, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { REMOVE_ALL } from "../utils/constants";
 import BasicModal from "../components/ui/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ItemsList from "../components/ItemsList";
 import DragListView from "../components/DragListView";
 import SearchAppBar from "../components/ui/header";
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import { setDelete } from "../state/features/todo";
+import Cookies from 'js-cookie';
+import { setToken, setUser } from "../state/features/auth";
+import { useSelector } from "react-redux";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const Todo = () => {
     const dispatch = useDispatch();
@@ -20,6 +24,18 @@ const Todo = () => {
     const handleRemoveAllClose = () => setremoveAllOpen(false);
     const handleRemoveAllOpen = () => setremoveAllOpen(true);
     const handleOpen = () => setOpen(true);
+    const isAuth = useSelector(state => state.auth.token)
+    useEffect(() => {
+        const userData = Cookies.get('userData')
+        if (userData) {
+            dispatch(
+                setUser(JSON.parse(userData))
+            )
+            dispatch(
+                setToken("login")
+            )
+        }// eslint-disable-next-line
+    }, []);
     return (
         <>
             <SearchAppBar handleToggleView={handleToggleView} toggleView={toggleView} />
@@ -37,19 +53,31 @@ const Todo = () => {
                             }} >ALL TASKS </Typography>
                         <FactCheckOutlinedIcon sx={{ mb: "1px" }} />
                     </Box>
-                    {!toggleView
-                        ? <ItemsList handleOpen={handleOpen} handleClose={handleClose} open={open} />
-                        : <DragListView handleOpen={handleOpen} handleClose={handleClose} open={open} />
+                    {Boolean(isAuth) ?
+                        !toggleView
+                            ? <ItemsList handleOpen={handleOpen} handleClose={handleClose} open={open} />
+                            : <DragListView handleOpen={handleOpen} handleClose={handleClose} open={open} />
+                        : <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: "column", alignItems: 'center' }}>
+                            <Avatar sx={{ m: 1, bgcolor: '#C58940' }}>
+                                <LockOutlinedIcon />
+                            </Avatar><Typography sx={{
+                                fontSize: '18px',
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                                marginTop: 2,
+                            }}>User Must Login First To View Todos</Typography>
+                        </Box>}
+                    {Boolean(isAuth) ?
+                        <Button
+                            sx={{
+                                m: 2
+                            }}
+                            color="error"
+                            variant="outlined"
+                            onClick={handleRemoveAllOpen}>
+                            CLEAR LIST
+                        </Button> : ""
                     }
-                    <Button
-                        sx={{
-                            m: 2
-                        }}
-                        color="error"
-                        variant="outlined"
-                        onClick={handleRemoveAllOpen}>
-                        CLEAR LIST
-                    </Button>
                 </Box>
                 <BasicModal
                     open={removeAllOpen}

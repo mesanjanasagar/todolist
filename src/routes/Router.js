@@ -1,12 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
-import Todo from '../pages/Todo'
-import Auth from '../components/Auth'
+import Todo from '../pages/todo.js'
 
 const Router = () => {
     return (
         <Routes>
             <Route path='/' element={<Todo />} />
-            <Route path='/auth' element={<Auth />} />
         </Routes>
     )
 }

@@ -9,7 +9,7 @@ import { Draggable } from "react-beautiful-dnd";
 import ExpandView from "./ui/expandContractView";
 import { setDelete, setIsEditItem, setStatus } from "../state/features/todo";
 
-const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, handleOpen, i, editingData }) => {
+const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, handleOpen, i }) => {
     const dispatch = useDispatch();
     const items = useSelector(state => state.todos.todoData);
 
@@ -77,7 +77,7 @@ const TodoItem = ({ curElem, handleEditingData, handleFormModal, editField, hand
                                 {curElem.title}
                             </Typography>
                             <Box sx={{ display: 'flex', justifyContent: 'start' }}>
-                                <Box sx={{ wordWrap: 'break-word', width: '100%', textAlign: 'start' }}>
+                                <Box sx={{ wordWrap: 'break-word',wordBreak:'break-all', width: '100%', textAlign: 'start' }}>
                                     <ExpandView text={curElem.description} limit={100} />
                                 </Box>
                             </Box>

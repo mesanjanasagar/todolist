@@ -15,10 +15,12 @@ import { Add } from "@mui/icons-material";
 import InputModal from "./inputModal";
 import TodoForm from "../todoForm";
 import LoginIcon from '@mui/icons-material/Login';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { setFilteredItem, setSearchTerm } from '../../state/features/todo';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { setToken } from '../../state/features/auth'
+import { setToken, setUser } from '../../state/features/auth';
+import Cookies from 'js-cookie';
+
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -69,7 +71,6 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
     const searchTerm = useSelector(state => state.todos.searchTerm);
     const isAuth = useSelector(state => state.auth.token);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -84,7 +85,8 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
     const handleFormModal = () => setFormOpen(false);
     const handleLogout = () => {
         dispatch(setToken());
-        console.log(isAuth);
+        dispatch(setUser());
+        Cookies.remove('userData');
     }
 
     return (
@@ -162,9 +164,11 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
                         ? < IconButton sx={{ ml: { md: 2 }, color: "#DDE6ED" }}>
                             <LogoutIcon onClick={handleLogout} />
                         </IconButton>
-                        : < IconButton sx={{ ml: { md: 2 }, color: "#DDE6ED" }}>
-                            <LoginIcon onClick={() => navigate('/auth')} />
-                        </IconButton>
+                        : <Link to={"http://localhost:3001"}>
+                            < IconButton sx={{ ml: { md: 2 }, color: "#DDE6ED" }}>
+                                <LoginIcon />
+                            </IconButton>
+                        </Link>
                     }
                 </Toolbar>
                 <InputModal fromOpen={fromOpen} handleFormModal={handleFormModal}>
