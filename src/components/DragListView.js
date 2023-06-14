@@ -73,7 +73,7 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
-                      border:"1px solid #EDEDED",
+                      border: "1px solid #EDEDED",
                       p: { md: 2, sm: 0 },
                     }}
                     elevation={0}
@@ -89,35 +89,21 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                     >
                       Active Tasks
                     </Typography>
-                    {filteredItems.length ? (
-                      filteredItems
-                        .filter((curElem) => curElem.status === STATUS.PENDING)
-                        .map((curElem, i) => {
-                          return (
-                            <TodoItem
-                              curElem={curElem}
-                              handleOpen={handleOpen}
-                              handleEditingData={handleEditingData}
-                              handleFormModal={handleFormModal}
-                              editField={editField}
-                              i={i}
-                              editingData={editingData}
-                            />
-                          );
-                        })
-                    ) : (
-                      <Typography
-                        sx={{
-                          fontSize: "18px",
-                          fontWeight: "bold",
-                          textAlign: "center",
-                          marginTop: 2,
-                          color: "#526D82",
-                        }}
-                      >
-                        Nothing To Show
-                      </Typography>
-                    )}
+                    {filteredItems
+                      .filter((curElem) => curElem.status === STATUS.PENDING)
+                      .map((curElem, i) => {
+                        return (
+                          <TodoItem
+                            curElem={curElem}
+                            handleOpen={handleOpen}
+                            handleEditingData={handleEditingData}
+                            handleFormModal={handleFormModal}
+                            editField={editField}
+                            i={i}
+                            editingData={editingData}
+                          />
+                        );
+                      })}
                     {provided.placeholder}
                   </Paper>
                 </Container>
@@ -139,7 +125,7 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                       alignItems: "center",
                       justifyContent: "center",
                       p: { md: 2, sm: 0 },
-                      border:"1px solid #EDEDED"
+                      border: "1px solid #EDEDED",
                     }}
                     elevation={0}
                     ref={provided.innerRef}
@@ -154,33 +140,19 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                     >
                       Completed Tasks
                     </Typography>
-                    {filteredItems.length ? (
-                      filteredItems
-                        .filter((curElem) => curElem.status === STATUS.COMPLETE)
-                        .map((curElem, i) => (
-                          <TodoItem
-                            curElem={curElem}
-                            handleOpen={handleOpen}
-                            handleEditingData={handleEditingData}
-                            handleFormModal={handleFormModal}
-                            editField={editField}
-                            i={i}
-                            editingData={editingData}
-                          />
-                        ))
-                    ) : (
-                      <Typography
-                        sx={{
-                          fontSize: "18px",
-                          fontWeight: "bold",
-                          textAlign: "center",
-                          marginTop: 2,
-                          color: "#526D82",
-                        }}
-                      >
-                        Nothing To Show
-                      </Typography>
-                    )}
+                    {filteredItems
+                      .filter((curElem) => curElem.status === STATUS.COMPLETE)
+                      .map((curElem, i) => (
+                        <TodoItem
+                          curElem={curElem}
+                          handleOpen={handleOpen}
+                          handleEditingData={handleEditingData}
+                          handleFormModal={handleFormModal}
+                          editField={editField}
+                          i={i}
+                          editingData={editingData}
+                        />
+                      ))}
                     {provided.placeholder}
                   </Paper>
                 </Container>

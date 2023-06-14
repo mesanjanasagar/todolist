@@ -26,6 +26,7 @@ const Todo = () => {
   const handleOpen = () => setOpen(true);
   const isAuth = useSelector((state) => state.auth.token);
   const userData = Cookies.get("userData");
+  const todoData = useSelector((state) => state.todos.todoData);
   useEffect(() => {
     if (userData) {
       dispatch(setUser(JSON.parse(userData)));
@@ -101,7 +102,7 @@ const Todo = () => {
               </Typography>
             </Box>
           )}
-          {Boolean(isAuth) ? (
+          {Boolean(isAuth) && todoData.length ? (
             <Button
               sx={{
                 m: 2,

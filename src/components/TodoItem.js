@@ -112,6 +112,17 @@ const TodoItem = ({
                 </Box>
               </Box>
             </Box>
+            <Typography
+              sx={{
+                mr: 3,
+                color: `${
+                  curElem.status === STATUS.COMPLETE ? "#AACB73" : "#FFD24C"
+                }`,
+                fontSize:12
+              }}
+            >
+              {curElem.status.toUpperCase()}
+            </Typography>
             <IconButton
               sx={{ position: "absolute", top: 0, right: 0 }}
               id="basic-button"
@@ -131,8 +142,8 @@ const TodoItem = ({
                 "aria-labelledby": "basic-button",
               }}
               transformOrigin={{
-                vertical:"center",
-                horizontal:"center",
+                vertical: "center",
+                horizontal: "center",
               }}
             >
               {curElem.status !== STATUS.COMPLETE ? (
