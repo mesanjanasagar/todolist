@@ -18,8 +18,6 @@ const Todo = () => {
   // remove all the elements
   const [open, setOpen] = useState(false);
   const [removeAllOpen, setremoveAllOpen] = useState(false);
-  const [toggleView, setToggleView] = useState(false);
-  const handleToggleView = () => setToggleView(!toggleView);
   const handleClose = () => setOpen(false);
   const handleRemoveAllClose = () => setremoveAllOpen(false);
   const handleRemoveAllOpen = () => setremoveAllOpen(true);
@@ -27,6 +25,7 @@ const Todo = () => {
   const isAuth = useSelector((state) => state.auth.token);
   const userData = Cookies.get("userData");
   const todoData = useSelector((state) => state.todos.todoData);
+  const toggleView = useSelector((state) => state.todos.toggleView);
   useEffect(() => {
     if (userData) {
       dispatch(setUser(JSON.parse(userData)));
@@ -37,10 +36,7 @@ const Todo = () => {
   }, [userData]);
   return (
     <>
-      <SearchAppBar
-        handleToggleView={handleToggleView}
-        toggleView={toggleView}
-      />
+      <SearchAppBar />
       <Box>
         <Box sx={{ textAlign: "center" }}>
           <Box

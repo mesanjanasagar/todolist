@@ -24,7 +24,11 @@ import InputModal from "./inputModal";
 import TodoForm from "../todoForm";
 import LoginIcon from "@mui/icons-material/Login";
 import { Link } from "react-router-dom";
-import { setFilteredItem, setSearchTerm } from "../../state/features/todo";
+import {
+  setFilteredItem,
+  setSearchTerm,
+  setToggleView,
+} from "../../state/features/todo";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { setToken, setUser } from "../../state/features/auth";
 import Cookies from "js-cookie";
@@ -71,12 +75,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar({ handleToggleView, toggleView }) {
+export default function SearchAppBar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [fromOpen, setFormOpen] = useState(false);
   const open = Boolean(anchorEl);
   const filteredItem = useSelector((state) => state.todos.filteredItem);
   const searchTerm = useSelector((state) => state.todos.searchTerm);
+  const toggleView = useSelector((state) => state.todos.toggleView);
   const isAuth = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const handleClick = (event) => {
@@ -142,7 +147,10 @@ export default function SearchAppBar({ handleToggleView, toggleView }) {
               </Badge>
             </IconButton>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <IconButton sx={{ color: "#989898" }} onClick={handleToggleView}>
+            <IconButton
+              sx={{ color: "#989898" }}
+              onClick={() => dispatch(setToggleView())}
+            >
               {!toggleView ? (
                 <AutoAwesomeMosaicIcon />
               ) : (

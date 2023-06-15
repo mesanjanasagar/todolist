@@ -9,8 +9,8 @@ import TodoForm from "./todoForm";
 import BasicModal from "./ui/modal";
 import { useDispatch } from "react-redux";
 import { getFilteredItems } from "../utils/helper";
-import { setStatus } from "../state/features/todo";
-
+import { setPriority, setStatus } from "../state/features/todo";
+import empty from "../assets/empty.png";
 const DragListView = ({ handleOpen, handleClose, open }) => {
   const todoData = useSelector((state) => state.todos.todoData);
   const [editField, seteditFeld] = useState(false);
@@ -24,7 +24,6 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
   let filteredItems = getFilteredItems(todoData, searchTerm, filteredItem);
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-    console.log(result);
     if (!destination) {
       return;
     }
@@ -34,7 +33,6 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
     ) {
       return;
     }
-    // Source Logic
     if (
       source.droppableId === "Todolist-active" &&
       destination.droppableId === "Todolist-completed"
@@ -45,6 +43,10 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
       destination.droppableId === "Todolist-active"
     ) {
       dispatch(setStatus(draggableId));
+    } else if (source.droppableId === destination.droppableId) {
+      dispatch(
+        setPriority({ source: source.index, destination: destination.index })
+      );
     }
   };
   return (
@@ -72,9 +74,10 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "start",
                       border: "1px solid #EDEDED",
                       p: { md: 2, sm: 0 },
+                      minHeight: "60vh",
                     }}
                     elevation={0}
                     ref={provided.innerRef}
@@ -89,21 +92,31 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                     >
                       Active Tasks
                     </Typography>
-                    {filteredItems
-                      .filter((curElem) => curElem.status === STATUS.PENDING)
-                      .map((curElem, i) => {
-                        return (
-                          <TodoItem
-                            curElem={curElem}
-                            handleOpen={handleOpen}
-                            handleEditingData={handleEditingData}
-                            handleFormModal={handleFormModal}
-                            editField={editField}
-                            i={i}
-                            editingData={editingData}
-                          />
-                        );
-                      })}
+                    {filteredItems.filter(
+                      (curElem) => curElem.status === STATUS.PENDING
+                    ).length !== 0 ? (
+                      filteredItems
+                        .filter((curElem) => curElem.status === STATUS.PENDING)
+                        .map((curElem, i) => {
+                          return (
+                            <TodoItem
+                              curElem={curElem}
+                              handleOpen={handleOpen}
+                              handleEditingData={handleEditingData}
+                              handleFormModal={handleFormModal}
+                              editField={editField}
+                              i={i}
+                              editingData={editingData}
+                            />
+                          );
+                        })
+                    ) : (
+                      <Box
+                        sx={{ my: "auto" }}
+                        component={"img"}
+                        src={empty}
+                      ></Box>
+                    )}
                     {provided.placeholder}
                   </Paper>
                 </Container>
@@ -123,9 +136,10 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "start",
                       p: { md: 2, sm: 0 },
                       border: "1px solid #EDEDED",
+                      minHeight: "60vh",
                     }}
                     elevation={0}
                     ref={provided.innerRef}
@@ -140,19 +154,31 @@ const DragListView = ({ handleOpen, handleClose, open }) => {
                     >
                       Completed Tasks
                     </Typography>
-                    {filteredItems
-                      .filter((curElem) => curElem.status === STATUS.COMPLETE)
-                      .map((curElem, i) => (
-                        <TodoItem
-                          curElem={curElem}
-                          handleOpen={handleOpen}
-                          handleEditingData={handleEditingData}
-                          handleFormModal={handleFormModal}
-                          editField={editField}
-                          i={i}
-                          editingData={editingData}
-                        />
-                      ))}
+                    {filteredItems.filter(
+                      (curElem) => curElem.status === STATUS.COMPLETE
+                    ).length !== 0 ? (
+                      filteredItems
+                        .filter((curElem) => curElem.status === STATUS.COMPLETE)
+                        .map((curElem, i) => {
+                          return (
+                            <TodoItem
+                              curElem={curElem}
+                              handleOpen={handleOpen}
+                              handleEditingData={handleEditingData}
+                              handleFormModal={handleFormModal}
+                              editField={editField}
+                              i={i}
+                              editingData={editingData}
+                            />
+                          );
+                        })
+                    ) : (
+                      <Box
+                        sx={{ my: "auto" }}
+                        component={"img"}
+                        src={empty}
+                      ></Box>
+                    )}
                     {provided.placeholder}
                   </Paper>
                 </Container>

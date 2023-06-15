@@ -1,4 +1,13 @@
-import { Box, IconButton, Menu, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Paper,
+  Typography,
+} from "@mui/material";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
@@ -118,7 +127,7 @@ const TodoItem = ({
                 color: `${
                   curElem.status === STATUS.COMPLETE ? "#AACB73" : "#FFD24C"
                 }`,
-                fontSize:12
+                fontSize: 12,
               }}
             >
               {curElem.status.toUpperCase()}
@@ -138,47 +147,76 @@ const TodoItem = ({
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
               transformOrigin={{
-                vertical: "center",
-                horizontal: "center",
+                vertical: "top",
+                horizontal: "left",
+              }}
+              PaperProps={{
+                sx: {
+                  paddingX: 0.5,
+                  borderRadius: 3,
+                  border: "1px solid #E0E1E0",
+                },
               }}
             >
               {curElem.status !== STATUS.COMPLETE ? (
-                <IconButton
+                <MenuItem
+                  sx={{ borderRadius: 2 }}
                   disabled={curElem.status === STATUS.COMPLETE}
-                  sx={{ color: "#AACB73" }}
                   onClick={() => handleStatus(curElem)}
                 >
-                  <TaskAltIcon />
-                </IconButton>
+                  <ListItemIcon>
+                    <TaskAltIcon sx={{ color: "#AACB73" }} fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Complete</ListItemText>
+                </MenuItem>
               ) : (
                 ""
               )}
               {curElem.status !== STATUS.COMPLETE ? (
-                <IconButton>
-                  <EditNoteOutlinedIcon
-                    onClick={() => {
-                      editItem(curElem.id);
-                      handleFormModal(true);
-                    }}
+                <MenuItem
+                  sx={{ borderRadius: 2 }}
+                  onClick={() => {
+                    editItem(curElem.id);
+                    handleFormModal(true);
+                  }}
+                >
+                  <ListItemIcon>
+                    <EditNoteOutlinedIcon
+                      fontSize="small"
+                      sx={{ color: "#A6D0DD" }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText>Edit</ListItemText>
+                </MenuItem>
+              ) : (
+                ""
+              )}
+              {curElem.status !== STATUS.COMPLETE ? (
+                ""
+              ) : (
+                <MenuItem
+                  onClick={() => handleStatus(curElem)}
+                  sx={{ borderRadius: 2 }}
+                >
+                  <ListItemIcon>
+                    <ReplayOutlinedIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Reopen</ListItemText>
+                </MenuItem>
+              )}
+              <MenuItem
+                onClick={() => deleteItem(curElem.id)}
+                sx={{ borderRadius: 2 }}
+              >
+                <ListItemIcon>
+                  <DeleteOutlineOutlinedIcon
+                    sx={{ color: "#F19292" }}
+                    fontSize="small"
                   />
-                </IconButton>
-              ) : (
-                ""
-              )}
-              {curElem.status !== STATUS.COMPLETE ? (
-                ""
-              ) : (
-                <IconButton onClick={() => handleStatus(curElem)}>
-                  <ReplayOutlinedIcon />
-                </IconButton>
-              )}
-              <IconButton onClick={() => deleteItem(curElem.id)}>
-                <DeleteOutlineOutlinedIcon />
-              </IconButton>
+                </ListItemIcon>
+                <ListItemText >Delete</ListItemText>
+              </MenuItem>
             </Menu>
           </Box>
           {provided.placeholder}
